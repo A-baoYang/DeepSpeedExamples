@@ -23,7 +23,7 @@ def parse_args():
         "--model_name_or_path",
         type=str,
         help=
-        "Path to pretrained model or model identifier from huggingface.co/models.",
+        "Path to finetuned model",
         required=True,
     )
     parser.add_argument(

@@ -14,5 +14,6 @@ fi
 mkdir -p $OUTPUT
 
 deepspeed --num_gpus 1 main.py --model_name_or_path facebook/opt-350m \
-   --num_padding_at_beginning 1 --weight_decay 0.1 --disable_dropout --gradient_accumulation_steps 4 --zero_stage $ZERO_STAGE \
-   --deepspeed --output_dir $OUTPUT &> $OUTPUT/training.log
+   --num_padding_at_beginning 1 --weight_decay 0.1 --disable_dropout \
+   --gradient_accumulation_steps 4 --zero_stage $ZERO_STAGE \
+   --deepspeed --output_dir $OUTPUT 2>&1 | tee $OUTPUT/training-single_gpu.log

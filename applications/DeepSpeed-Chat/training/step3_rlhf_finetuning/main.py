@@ -45,7 +45,6 @@ from utils.module.lora import convert_lora_to_linear_layer
 def parse_args():
     parser = argparse.ArgumentParser(
         description="(Step 3) RLHF training arguments")
-
     parser.add_argument(
         '--data_path',
         nargs='*',
@@ -285,10 +284,8 @@ def parse_args():
     parser.add_argument('--enable_ema',
                         action='store_true',
                         help='Enable EMA checkpoint for the model.')
-
     parser = deepspeed.add_config_arguments(parser)
     args = parser.parse_args()
-
     # Validate settings
     if (args.actor_gradient_checkpointing
             and args.actor_lora_dim > 0) or (args.critic_gradient_checkpointing
@@ -296,12 +293,10 @@ def parse_args():
         assert (
             not args.only_optimize_lora
         ), "--{actor,critic}_gradient_checkpointing and --only_optimize_lora cannot be enabled at the same time."
-
     if args.inference_tp_size > 1:
         assert (
             args.actor_zero_stage == 3
         ), "Zero stage 3 must be used to do Tensor sharding in the hybrid engine"
-
     return args
 
 
@@ -426,7 +421,6 @@ def main():
             # if length > args.max_prompt_seq_len:
             #     prompts = prompts[:, length - args.max_prompt_seq_len:]
             #     raise ValueError("Prompt length is too long")
-
             out = trainer.generate_experience(batch_prompt['prompt'],
                                               batch_prompt['prompt_att_mask'])
             exp_dataset = exp_mini_dataset.add(out)

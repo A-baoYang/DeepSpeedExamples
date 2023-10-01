@@ -38,13 +38,11 @@ def create_hf_model(model_class,
             model_name_or_path,
             from_tf=bool(".ckpt" in model_name_or_path),
             config=model_config)
-
     model.config.end_token_id = tokenizer.eos_token_id
     model.config.pad_token_id = model.config.eos_token_id
     model.resize_token_embeddings(int(
         8 *
         math.ceil(len(tokenizer) / 8.0)))  # make the vocab size multiple of 8
-
     return model
 
 
@@ -72,6 +70,6 @@ def create_critic_model(model_name_or_path,
             model_ckpt_path
         ), f"Cannot find model checkpoint at {model_ckpt_path}"
         critic_model.load_state_dict(
-            torch.load(model_ckpt_path, map_location='cpu'))
+            torch.load(model_ckpt_path, map_location='cpu'), strict=False)
 
     return critic_model

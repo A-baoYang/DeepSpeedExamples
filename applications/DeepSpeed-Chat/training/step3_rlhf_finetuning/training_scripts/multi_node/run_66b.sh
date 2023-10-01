@@ -19,10 +19,11 @@ if [ "$CRITIC_ZERO_STAGE" == "" ]; then
 fi
 mkdir -p $OUTPUT
 
-Num_Padding_at_Beginning=1 # this is model related
-
+Num_Padding_at_Beginning=1
 Actor_Lr=5e-4
 Critic_Lr=5e-6
+
+# inference_tp_size = num of gpus (processes) to avoid error
 
 deepspeed --master_port 12346 main.py \
    --data_path Dahoas/rm-static \
@@ -44,10 +45,11 @@ deepspeed --master_port 12346 main.py \
    --lr_scheduler_type cosine \
    --gradient_accumulation_steps 1 \
    --num_warmup_steps 100 \
-   --deepspeed --seed 1234 \
+   --deepspeed \
+   --seed 1234 \
    --enable_hybrid_engine \
-   --inference_tp_size 8 \
-   --tp_gather_partition_size 4 \
+   --inference_tp_size 2 \
+   --tp_gather_partition_size 8 \
    --actor_zero_stage $ACTOR_ZERO_STAGE \
    --critic_zero_stage $CRITIC_ZERO_STAGE \
    --actor_gradient_checkpointing \
@@ -55,4 +57,4 @@ deepspeed --master_port 12346 main.py \
    --actor_lora_dim 128 \
    --actor_lora_module_name decoder.layers. \
    --output_dir $OUTPUT \
-    &> $OUTPUT/training.log
+    2>&1 | tee $OUTPUT/training.log

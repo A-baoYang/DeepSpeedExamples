@@ -66,9 +66,7 @@ class DeepSpeedPPOTrainer():
         self.lam = 0.95
 
     def _generate_sequence(self, prompts, mask):
-
         max_min_length = self.max_answer_seq_len + prompts.shape[1]
-
         with torch.no_grad():
             seq = self.actor_model.module.generate(prompts,
                                                    attention_mask=mask,

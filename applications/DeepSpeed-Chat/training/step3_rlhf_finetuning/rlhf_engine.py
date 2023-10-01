@@ -88,6 +88,7 @@ class DeepSpeedRLHFEngine():
             model_name_or_path=actor_model_name_or_path,
             tokenizer=self.tokenizer,
             ds_config=ds_config,
+            rlhf_training=True,
             disable_dropout=self.args.disable_actor_dropout)
 
         # LoRA
