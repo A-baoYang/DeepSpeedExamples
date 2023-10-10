@@ -18,8 +18,8 @@ deepspeed main.py \
    --data_split 2,4,4 \
    --model_name_or_path facebook/opt-350m \
    --num_padding_at_beginning 1 \
-   --per_device_train_batch_size 1 \
-   --per_device_eval_batch_size 1 \
+   --per_device_train_batch_size 6 \
+   --per_device_eval_batch_size 6 \
    --max_seq_len 512 \
    --learning_rate 2.5e-4 \
    --weight_decay 0.1 \
